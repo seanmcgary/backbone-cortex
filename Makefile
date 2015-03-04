@@ -18,7 +18,10 @@ endif
 clean:
 	rm build/*.js
 
-release: bumpVersion 
+release: bumpVersion minify
+	git tag -a $$(echo ${VERSION_CMD} | node)
+	git push --tags
+	npm publish
 
 bumpVersion:
 	npm version $(VERSION)
