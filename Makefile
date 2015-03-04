@@ -32,6 +32,7 @@ build: minify
 
 minify:
 	git rm --cached build/cortex-*.js | true
+	rm build/cortex-*.js | true
 	uglifyjs --compress --mangle --output build/cortex-$$(echo ${VERSION_CMD} | node).min.js -- client/cortex.js
 	uglifyjs --output build/cortex-$$(echo ${VERSION_CMD} | node).js -- client/cortex.js
 
