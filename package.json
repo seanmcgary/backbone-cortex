@@ -28,6 +28,6 @@
     "serve-static": "^1.9.1"
   },
   "devDependencies": {
-    "changelog-maker": "^1.2.0",
+    "changelog-maker": "^1.2.0"
   }
 }
