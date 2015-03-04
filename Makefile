@@ -18,10 +18,15 @@ endif
 clean:
 	rm build/*.js
 
-release: bumpVersion minify
+release: bumpVersion build
+	git tag -a $$(echo ${VERSION_CMD} | node)
+	git push --tags
+	npm publish
 
 bumpVersion:
-	npm version $(VERSION)
+	npm version $(VERSION) --no-git-tag-version
+
+build: minify
 
 minify:
 	uglifyjs --compress --mangle --output build/cortex.$$(echo ${VERSION_CMD} | node).min.js -- client/cortex.js
