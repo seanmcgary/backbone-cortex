@@ -93,9 +93,9 @@ If ```next``` is passed a truthy value, it will assume that you are passing an e
 
 ## Events
 
-You can current register two Backbone event handlers with your ```Cortex``` instance.
+You can currently register two Backbone event handlers with your ```Cortex``` instance.
 
-#### ```Cortex.on('error', function(err, route){})```
+#### ```Cortex.prototype.on('error', function(err, route){})```
 When an exception is thrown while executing a handler or middleware, it is caught and passed to the on error event.
 
 ##### ```err```
@@ -104,7 +104,7 @@ This is the error passed to the ```catch``` handler
 ##### ```route```
 Same as the route object passed to handlers.
 
-#### ```Cortex.on('afterRoute', function(route){})```
+#### ```Cortex.prototype.on('afterRoute', function(route){})```
 In the case that you want to have special logic run after your route is done executing, you can listen for the ```afterRoute``` event. 
 
 **Note** - this event will only fire if Cortex finds that the route stack is empty. To reach this state, ```next()``` must be called on the last handler/middleware in the stack.
