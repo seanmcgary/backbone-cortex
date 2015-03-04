@@ -19,7 +19,7 @@ clean:
 	rm build/*.js
 
 release: bumpVersion build
-	git tag -a $$(echo ${VERSION_CMD} | node)
+	git tag -a v$$(echo ${VERSION_CMD} | node) -m "v$$(echo ${VERSION_CMD} | node)"
 	git push --tags
 	npm publish
 
