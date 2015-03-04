@@ -61,9 +61,9 @@ $(function(){
 
 ## Cortex
 
-### ```Cortex```
-
 The ```Cortex``` object prototype extends from ```Backbone.Events```, so you are free to attach any event handlers you choose.
+
+## Middleware
 
 #### ```Cortex.prototype.use(function(route:obj[, next:function]){})```
 
@@ -90,6 +90,13 @@ An optional function that you can call to move on to the next handler. If the ro
 
 If ```next``` is passed a truthy value, it will assume that you are passing an error and it will trigger the ```error``` event and stop execution of the route stack.
 
+## Routes
+
+Creating a route is almost the same as registering a middleware:
+
+#### ```Cortex.prototype.route(path[, middlewares], handler)```
+
+Each of the middlewares and handler function are the same signature as the function passed to ```Cortex.prototype.use```.
 
 ## Events
 
