@@ -20,7 +20,7 @@ clean:
 
 release: bumpVersion build
 	git add .
-	git commit -m 'release version $$(echo ${VERSION_CMD} | node)'
+	git commit -m "release version `echo ${VERSION_CMD} | node`"
 	git tag -a $$(echo ${VERSION_CMD} | node) -m "$$(echo ${VERSION_CMD} | node)"
 	git push --tags
 	npm publish
