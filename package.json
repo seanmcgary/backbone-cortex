@@ -1,0 +1,25 @@
+{
+  "name": "backbone-cortex",
+  "version": "0.1.0",
+  "description": "An Express-like route handler for Backbone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seanmcgary/backbone-cortex.git"
+  },
+  "keywords": [
+    "backbone",
+    "express",
+    "router",
+    "middleware"
+  ],
+  "author": "Sean McGary <sean@seanmcgary.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanmcgary/backbone-cortex/issues"
+  },
+  "homepage": "https://github.com/seanmcgary/backbone-cortex"
+}
