@@ -29,7 +29,15 @@
 					next();
 				});
 
-				cortex.route('otherTest', function(route, next){
+				cortex.route('otherTest', {
+					optionData: 'stuff'
+				}, function(route, next){
+					console.log('middleware 1');
+					next();
+				}, function(route, next){
+					console.log('middleware 2');
+					next();
+				}, function(route, next){
 					console.log('other test handler');
 					next();
 				});

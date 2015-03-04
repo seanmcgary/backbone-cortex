@@ -1,8 +1,9 @@
 // Im a javascript file
 (function(window, $, _){
 
-	function Route(route, handlers, cortex){
+	function Route(route, options, handlers, cortex){
 		this.route = route;
+		this.options = options || {};
 		this.handlers = handlers;
 		this.cortex = cortex;
 	};
@@ -26,6 +27,10 @@
 		}, params);
 
 		return params;
+	};
+
+	Route.prototype.getOptions = function(){
+		return this.options || {};
 	};
 
 	Route.prototype.tokenizeUrlParams = function(parameters){
@@ -58,6 +63,7 @@
 			var scope = {
 				query: self.tokenizeQueryString(args.pop()),
 				params: self.tokenizeUrlParams(args),
+				options: self.getOptions(),
 				Route: self,
 				data: {}
 			};
@@ -112,11 +118,18 @@
 
 	Cortex.prototype.route = function(route){
 		var args = _.values(arguments);
-		if(args.length < 2){
-			return console.warn('Missing arguments; Cortex.route(route, fn)');
+
+		if(args.length < 2 || (args.length == 2 && _.isPlainObject(args[1]))) {
+			return console.warn('Missing arguments; Cortex.route(route[, options], fn...)');
 		}
 
-		this.routes.push(new Route(route, args.slice(1), this));
+		var options = {};
+		if(_.isPlainObject(args[1])){
+			options = args[1];
+			args = args.slice(1);
+		}
+
+		this.routes.push(new Route(route, options, args.slice(1), this));
 	};
 
 	Cortex.prototype.getRoutes = function(cb){
