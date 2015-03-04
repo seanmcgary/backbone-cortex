@@ -1,0 +1,117 @@
+Cortex is a wrapper for Backbone routes that makes them function like routes in Express, allowing you to define middleware functions for each route.
+
+## Usage
+
+Include the Cortex source after Backbone and its dependencies have been loaded
+
+```html
+<script type="text/css" src="<path>/cortex.x.x.x.min.js"></script>
+```
+
+
+Example:
+
+```javascript
+$(function(){
+	var cortex = new Cortex();
+
+	// Event handler for when a middleware or route
+	// handler throws an exception
+	cortex.on('error', function(err, route){
+		
+	});
+
+	// Event for post-route handling.
+	// This will only fire when `next()` is called in the
+	// last handler in the chain and the route stack is of 
+	// length 0
+	cortex.on('afterRoute', function(route){
+		console.log('after everything', route);
+	});
+
+	// Define a middleware that will be used before every route
+	cortex.use(function(route, next){
+		route.data.someValue = 'test';
+		next();
+	});
+
+	// Define a route
+	cortex.route('test/:token(/:optionalParam)', function(route, next){
+		next();
+	});
+
+	cortex.route('otherTest', function(route, next){
+		console.log('other test handler');
+		next();
+	});
+
+	// initialize your Backbone app
+	var app = Backbone.Router.extend({
+		routes: cortex.getRoutes(),
+		initialize: function(){
+			console.log('app init');
+		}
+	});
+
+	new app();
+	Backbone.history.start({ pushState: true });
+});
+
+```
+
+## Cortex
+
+### ```Cortex```
+
+The ```Cortex``` object prototype extends from ```Backbone.Events```, so you are free to attach any event handlers you choose.
+
+### ```Cortex.prototype.use(function(route:obj[, next:function]){})```
+
+Much like the use function in Express, ```Cortex.prototype.use``` allows you to push a middleware onto the stack
+
+#### ```route``` is an object literal that contains some data that is passed along from handler to handler
+
+##### ```route.query```
+An object containing a property for each query string parameter in the route. If there is no query string, it is the empty object, {}.
+
+##### ```route.params```
+ An object containing properties mapped to the named route “parameters”. For example, if you have the route ```user/:name```, then the “name” property is available as req.params.name. This object defaults to {}.
+
+##### ```route.data```
+An empty object where you can place data to be passed between handlers/middlewares
+
+##### ```route.Route```
+A reference to the Route object that encapsulates a given path/handler combination
+
+#### ```next```
+
+An optional function that you can call to move on to the next handler. If the route stack is empty, the ```afterRoute``` will be fired.
+
+If ```next``` is passed a truthy value, it will assume that you are passing an error and it will trigger the ```error``` event and stop execution of the route stack.
+
+
+## Events
+
+You can current register two Backbone event handlers with your ```Cortex``` instance.
+
+### ```Cortex.on('error', function(err, route){})```
+When an exception is thrown while executing a handler or middleware, it is caught and passed to the on error event.
+
+#### ```err```
+This is the error passed to the ```catch``` handler
+
+#### ```route```
+Same as the route object passed to handlers.
+
+### ```Cortex.on('afterRoute', function(route){})```
+In the case that you want to have special logic run after your route is done executing, you can listen for the ```afterRoute``` event. 
+
+**Note** - this event will only fire if Cortex finds that the route stack is empty. To reach this state, ```next()``` must be called on the last handler/middleware in the stack.
+
+## Generating routes
+
+Once you have your routes defined, calling ```Cortex.prototype.getRoutes()``` will return an object literal that can be passed as the routes value when creating a Backbone router.
+
+
+
+
