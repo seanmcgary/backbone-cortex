@@ -65,11 +65,12 @@ $(function(){
 
 The ```Cortex``` object prototype extends from ```Backbone.Events```, so you are free to attach any event handlers you choose.
 
-### ```Cortex.prototype.use(function(route:obj[, next:function]){})```
+#### ```Cortex.prototype.use(function(route:obj[, next:function]){})```
 
 Much like the use function in Express, ```Cortex.prototype.use``` allows you to push a middleware onto the stack
 
-#### ```route``` is an object literal that contains some data that is passed along from handler to handler
+#### ```route``` 
+is an object literal that contains some data that is passed along from handler to handler
 
 ##### ```route.query```
 An object containing a property for each query string parameter in the route. If there is no query string, it is the empty object, {}.
@@ -94,16 +95,16 @@ If ```next``` is passed a truthy value, it will assume that you are passing an e
 
 You can current register two Backbone event handlers with your ```Cortex``` instance.
 
-### ```Cortex.on('error', function(err, route){})```
+#### ```Cortex.on('error', function(err, route){})```
 When an exception is thrown while executing a handler or middleware, it is caught and passed to the on error event.
 
-#### ```err```
+##### ```err```
 This is the error passed to the ```catch``` handler
 
-#### ```route```
+##### ```route```
 Same as the route object passed to handlers.
 
-### ```Cortex.on('afterRoute', function(route){})```
+#### ```Cortex.on('afterRoute', function(route){})```
 In the case that you want to have special logic run after your route is done executing, you can listen for the ```afterRoute``` event. 
 
 **Note** - this event will only fire if Cortex finds that the route stack is empty. To reach this state, ```next()``` must be called on the last handler/middleware in the stack.
