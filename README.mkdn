@@ -117,6 +117,8 @@ The first parameter is a path definition as defined in the [Backbone documentati
 
 > Trailing slashes are treated as part of the URL, and (correctly) treated as a unique route when accessed. docs and docs/ will fire different callbacks. If you can't avoid generating both types of URLs, you can define a ```docs(/)``` matcher to capture both cases.
 
+Parameters specified in the URL are mapped and passed as the ```route.params``` object that is passed to the route handler.
+
 The second parameter is an optional object literal that you can use to pass configuration data to your route.
 f
 Each of the middlewares and handler function are the same signature as the function passed to ```Cortex.prototype.use```.
