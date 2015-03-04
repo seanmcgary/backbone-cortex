@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.3.1/lodash.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+		<script type="text/javascript" src="/cortex.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var cortex = new Cortex();
+
+				cortex.on('error', function(err, route){
+					console.log('error');
+					console.log(err);
+					console.log(err.stack);
+				});
+
+				cortex.on('afterRoute', function(route){
+					console.log('after everything', route);
+				});
+
+				cortex.use(function(route, next){
+					console.log(route);
+					route.data.foobvbar = 'test';
+					next();
+				});
+
+				cortex.route('test/:token(/:optionalParam)', function(route, next){
+					next();
+				});
+
+				cortex.route('otherTest', function(route, next){
+					console.log('other test handler');
+					next();
+				});
+
+				var app = Backbone.Router.extend({
+					routes: cortex.getRoutes(),
+					initialize: function(){
+						console.log('app init');
+					}
+				});
+
+				new app();
+				Backbone.history.start({ pushState: true });
+			});
+		</script>
+	</head>
+	<body>
+
+	</body>
+</html>
