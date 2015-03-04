@@ -1,6 +1,6 @@
 {
   "name": "backbone-cortex",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An Express-like route handler for Backbone",
   "main": "index.js",
   "scripts": {
