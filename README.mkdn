@@ -5,7 +5,7 @@ Cortex is a wrapper for Backbone routes that makes them function like routes in 
 Include the Cortex source after Backbone and its dependencies have been loaded
 
 ```html
-<script type="text/css" src="<path>/cortex.x.x.x.min.js"></script>
+<script type="text/javascript" src="<path>/cortex-x.x.x.min.js"></script>
 ```
 
 
