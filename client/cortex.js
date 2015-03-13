@@ -1,11 +1,55 @@
-// Im a javascript file
-(function(window, $, _){
+//	Cortex.js
 
-	function Route(route, options, handlers, cortex){
+//	(c) 2015 Sean McGary
+//	Cortex may be freely distributed under the MIT license.
+
+;(function(root, factory){
+	// Setup Cortex for the environment
+	//
+	// Done in a simliar way to Backbone https://github.com/jashkenas/backbone/blob/master/backbone.js
+	//
+	if(typeof define === 'function' && define.amd){
+
+		// Check for AMD
+		define(['lodash', 'backbone'], function(_, backbone){
+			root.Cortex = factory(root, _, backbone);
+			return root.Cortex;
+		});
+
+	} else if(typeof exports !== 'undefined'){
+
+		// Check for Node.js or CommonJS.
+		var _;
+		var lodash;
+		var underscore;
+
+		// favor lodash over underscore
+		try {
+			lodash = require('lodash');
+		} catch(e){}
+		try {
+			if(!lodash){
+				underscore = require('underscore');
+			}
+		} catch(e){};
+
+		
+		_ = lodash || underscore;
+		var backbone = require('backbone');
+
+		exports.Cortex = factory(root, _, backbone);
+
+	} else {
+		// The "classic way" - attaching Cortex to window
+		root.Cortex = factory(root, root._, root.Backbone);
+	}
+
+})(this, function(root, _, Backbone){
+	function Route(route, options, handlers, Cortex){
 		this.route = route;
 		this.options = options || {};
 		this.handlers = handlers;
-		this.cortex = cortex;
+		this.Cortex = Cortex;
 	};
 
 	Route.prototype.tokenizeQueryString = function(qs){
@@ -53,7 +97,7 @@
 
 		return function(){
 			
-			var routeStack = [].concat(self.cortex.getMiddlewares()).concat(self.handlers);
+			var routeStack = [].concat(self.Cortex.getMiddlewares()).concat(self.handlers);
 
 			if(!routeStack.length){
 				return;
@@ -70,7 +114,7 @@
 
 			var processNext = function(){
 				if(!routeStack.length){
-					return self.cortex.trigger('afterRoute', scope);
+					return self.Cortex.trigger('afterRoute', scope);
 				}
 
 				var current = routeStack.shift();
@@ -81,12 +125,12 @@
 				try {
 					current(scope, function(err){
 						if(err){
-							return self.cortex.trigger('error', err, scope, self);
+							return self.Cortex.trigger('error', err, scope, self);
 						}
 						processNext();
 					});
 				} catch(e){
-					self.cortex.trigger('error', e, scope, self);
+					self.Cortex.trigger('error', e, scope, self);
 				}
 			};
 			processNext();
@@ -141,8 +185,7 @@
 		}, routes);
 		return routes;
 	};
+	return Cortex;
 
-	window.Cortex = Cortex;
-
-})(window, jQuery, _);
+});
 
