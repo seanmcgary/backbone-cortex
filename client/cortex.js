@@ -37,7 +37,7 @@
 		var params = {};
 		parameters = _.filter(parameters, function(a){ return !!a; });
 
-		var tokenNames = _.map(this.route.match(/(:[^\/]+)/g), function(r){
+		var tokenNames = _.map(this.route.match(/(:[^\/|\*]+)/g), function(r){
 			return r.substring(1).replace(/[\(\)]/g, '');
 		});
 
