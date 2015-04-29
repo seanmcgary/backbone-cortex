@@ -69,6 +69,8 @@
 			};
 
 			var processNext = function(){
+				var optionalArguments = _.values(arguments) || [];
+
 				if(!routeStack.length){
 					return self.cortex.trigger('afterRoute', scope);
 				}
@@ -79,12 +81,16 @@
 					return;
 				}
 				try {
-					current(scope, function(err){
+					var next = function(err){
 						if(err){
 							return self.cortex.trigger('error', err, scope, self);
 						}
-						processNext();
-					});
+
+						processNext(_.values(arguments).slice(1));
+					};
+
+					var routeArgs = _.flatten([scope, next].concat(optionalArguments));
+					current.apply(this, routeArgs);
 				} catch(e){
 					self.cortex.trigger('error', e, scope, self);
 				}
