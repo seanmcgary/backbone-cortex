@@ -28,11 +28,12 @@
 				// Define a middleware that will be used before every route
 				cortex.use(function(route, next){
 					route.data.someValue = 'test';
-					next();
+					next(null, 'someString');
 				});
 
 				// Define a route
-				cortex.route('test/:token(/:optionalParam)', function(route, next){
+				cortex.route('test/:token(/:optionalParam)', function(route, next, someString){
+					console.log(arguments);
 					next();
 				});
 
